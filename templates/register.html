@@ -15,21 +15,12 @@
     </nav>
     <section class="relative py-10">
         <div class="container mx-auto">
-            <div class="row-auto mb-20">
-                <div class="text-center mx-auto w-1/2">
-                    <p class="text-2xl font-bold text-black mb-4">Welcome</p>
-                    <p class="text-center">
-                        Embark on a cinematic journey where artificial intelligence meets your movie preferences.
-                        Unleash a world of personalised film discoveries with the seamless fusion of technology
-                        and entertainment at your fingertips.
-                    </p>
-                </div>
-            </div>
-            <div class="flex flex-row justify-center items-start">
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-2xl text-black mb-20">Experience personalized movie recommendations powered by AI</p>
                 <div class="flex flex-col mb-10 border-none rounded-xl w-1/3 md:w-1/3 sm:w-2/3" style=" box-shadow: 0 0 10px rgba(0, 0, 0, 0.4)">
                     <div class="flex flex-col items-center">
                         <form class="text-center w-full px-16 py-8" action="/home" method="post">
-                            <p class="text-start text-2xl font-bold mb-3">Sign In</p>
+                            <p class="text-start text-2xl font-bold mb-3">Join</p>
                             <div class="mb-3">
                                 <input type="email" name="email" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Email">
                             </div>
@@ -37,13 +28,13 @@
                                 <input type="password" name="password" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Password">
                             </div>
                             <div>
-                                <input type="hidden" name="form_name" value="login">
+                                <input type="hidden" name="form_name" value="join">
                             </div>
                             <div class="mb-3">
-                                <button class="bg-blue-700 text-white rounded-md w-full p-3 mt-3">Sign In</button>
+                                <button type="register" class="bg-blue-700 text-white rounded-md w-full p-3 mt-3">Join</button>
                             </div>
                             <hr class="my-6">
-                            <p class="text-gray-500"> New to MovieMinds? <a href="{{ url_for('register') }}" class="hover:underline text-blue-700 font-medium">Join Now</a></p>
+                            <p class="text-gray-500"> Already on MovieMinds? <a href="{{ url_for('login') }}" class="hover:underline text-blue-700 font-medium">Sign In</a></p>
                         </form>
                     </div>
                 </div>

@@ -3,9 +3,9 @@ from flask_user import UserMixin
 
 db = SQLAlchemy()
 
+
 # Define the User data-model.
-# NB: Make sure to add flask_user UserMixin as this adds additional fields and properties required by Flask-User
-class User(db.Model, UserMixin):
+class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')

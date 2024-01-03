@@ -19,13 +19,13 @@
                 <p class="text-2xl text-black mb-10">Experience personalized movie recommendations powered by AI</p>
                 <div class="flex flex-col mb-10 border-none rounded-xl w-1/3 md:w-1/3 sm:w-2/3" style=" box-shadow: 0 0 10px rgba(0, 0, 0, 0.4)">
                     <div class="flex flex-col items-center">
-                        <form class="text-center w-full px-16 py-8" action="/home" method="post">
+                        <form class="text-center w-full px-16 py-8" action="{{ url_for('register') }}" method="post">
                             <p class="text-start text-2xl font-bold mb-3">Join</p>
                             <div class="mb-3">
-                                <input type="email" name="email" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Email">
+                                <input name="username" id="username" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Email">
                             </div>
                             <div class="mb-3">
-                                <input type="password" name="password" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Password">
+                                <input type="password" id="password" name="password" class="border border-solid border-gray-400 rounded-md w-full p-3 mt-3" placeholder="Password">
                             </div>
                             <div>
                                 <input type="hidden" name="form_name" value="join">

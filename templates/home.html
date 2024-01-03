@@ -18,11 +18,29 @@
                 <li class="hover:text-blue-700"><a href="#"> Contact </a></li>
             </ul>
             <div>
-                <a href="/">
+                <a href="/login">
                     <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" class="w-5 h-5">
                 </a>
             </div>
         </div>
     </nav>
+    <div class="flex flex-col whitespace-nowrap p-4 bg-gray-800">
+        <h2>Recommended for you</h2>
+        <div class="z-50 flex flex-row overflow-auto">
+            {% for movie in movies %}
+                <div>
+                    <p>{{ movie.title }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="z-50">
+            <h2>Recommended for you</h2>
+            {% for movie in movies %}
+                <div>
+                    <p>{{ movie.title }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

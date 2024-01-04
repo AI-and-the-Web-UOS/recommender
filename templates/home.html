@@ -15,8 +15,8 @@
         /* Versteckt die Scrollbar für Firefox */
         html {
             scrollbar-width: none;
-    }
-</style>
+        }
+    </style>
 </head>
 <body style="background-color: #252837">
     <nav class="py-5 shadow-md mb-10">
@@ -25,7 +25,6 @@
             <ul class="flex space-x-10 mr-auto">
                 <li class="text-white hover:text-blue-700"><a href="#"> Home </a></li>
                 <li class="text-white hover:text-blue-700"><a href="#"> Movies </a></li>
-                <li class="text-white hover:text-blue-700"><a href="#"> Settings </a></li>
             </ul>
             <div>
                 <a href="/login">
@@ -36,26 +35,189 @@
     </nav>
     <div class="flex flex-col" style="margin-left: auto; margin-right: 0; overflow-y: auto">
         <div class="container mx-auto mb-3">
-            <p class="text-start text-white font-semibold text-xl">Recommended for you</p>
+            <p class="text-start text-white font-semibold text-xl">Recommended for you, {{ firstName }} {{ lastName }}</p>
         </div>
         <div class="flex flex-row p-2" style="overflow-x: auto; padding-left: 10px; padding-bottom: 50px">
             {% for movie in movies %}
-                <div style="width: 250px; min-width: 250px; height: 120px; min-height: 120px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 20px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
-                    <p class="text-white">{{ movie.title }}</p>
+                <div style="width: 250px; min-width: 250px; height: 150px; min-height: 150px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 10px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
+                    <p class="text-white text-bold" style="margin-bottom: 10px; font-size: 16px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ movie.title }}</p>
+                    <div style="display: flex; flex-wrap: wrap">
+                        {% for g in movie.genres %}
+                            {% if g.genre == 'Adventure' %}
+                                <div style="background-color: blueviolet; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Action' %}
+                                <div style="background-color: aquamarine; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Children' %}
+                                <div style="background-color: cornflowerblue; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Comedy' %}
+                                <div style="background-color: darkorange; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Fantasy' %}
+                                <div style="background-color: darkorchid; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Romance' %}
+                                <div style="background-color: deeppink; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Drama' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Action' %}
+                                <div style="background-color: firebrick; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Crime' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Thriller' %}
+                                <div style="background-color: darkred; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Horror' %}
+                                <div style="background-color: darkslategray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Mystery' %}
+                                <div style="background-color: blueviolet; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Sci-Fi' %}
+                                <div style="background-color: darkcyan; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'War' %}
+                                <div style="background-color: saddlebrown; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Musical' %}
+                                <div style="background-color: darkorange; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Documentary' %}
+                                <div style="background-color: darkgreen; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'IMAX' %}
+                                <div style="background-color: darkred; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Western' %}
+                                <div style="background-color: peru; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Film-Noir' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="container mx-auto mb-3">
-            <p class="text-start text-white font-semibold text-xl">Action</p>
-        </div>
-        <div class="flex flex-row p-2" style="overflow-x: auto; padding-left: 10px; padding-bottom: 50px">
+        {% for genre, movies in moviesByGenre.items() %}
+            <div class="container mx-auto mb-3">
+                <p class="text-start text-white font-semibold text-xl">{{ genre }}</p>
+            </div>
+            <div class="flex flex-row p-2" style="overflow-x: auto; padding-left: 10px; padding-bottom: 50px">
             {% for movie in movies %}
-                <div style="width: 250px; min-width: 250px; height: 120px; min-height: 120px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 20px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
-                    <p class="text-white">{{ movie.title }}</p>
+                <div style="width: 250px; min-width: 250px; height: 150px; min-height: 150px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 10px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
+                    <p class="text-white" style="margin-bottom: 10px; font-size: 16px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ movie.title }}</p>
+                    <div style="display: flex; flex-wrap: wrap">
+                        {% for g in movie.genres %}
+                            {% if g.genre == 'Adventure' %}
+                                <div style="background-color: blueviolet; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Action' %}
+                                <div style="background-color: aquamarine; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Children' %}
+                                <div style="background-color: cornflowerblue; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Comedy' %}
+                                <div style="background-color: darkorange; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Fantasy' %}
+                                <div style="background-color: darkorchid; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Romance' %}
+                                <div style="background-color: deeppink; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Drama' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Action' %}
+                                <div style="background-color: firebrick; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Crime' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Thriller' %}
+                                <div style="background-color: darkred; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Horror' %}
+                                <div style="background-color: darkslategray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Mystery' %}
+                                <div style="background-color: blueviolet; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Sci-Fi' %}
+                                <div style="background-color: darkcyan; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'War' %}
+                                <div style="background-color: saddlebrown; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Musical' %}
+                                <div style="background-color: darkorange; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Documentary' %}
+                                <div style="background-color: darkgreen; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'IMAX' %}
+                                <div style="background-color: darkred; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Western' %}
+                                <div style="background-color: peru; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% elif g.genre == 'Film-Noir' %}
+                                <div style="background-color: dimgray; border-radius: 15px; padding: 1px 10px 1px 10px; display: inline-block; margin-right: 10px; margin-bottom: 8px">
+                                    <p class="text-white" style="font-size: 12px">{{ g.genre }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        {% endfor %}
     </div>
-
 </body>
 </html>

@@ -47,6 +47,8 @@ def login():
         if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             session['username'] = user.username
+            session['first_name'] = user.first_name
+            session['last_name'] = user.last_name
 
             flash('Login successful', 'success')
             return redirect('/')
@@ -60,15 +62,24 @@ def login():
 def register():
     session.clear()
     if request.method == 'POST':
+        first_name = request.form['firstName']
+        last_name = request.form['lastName']
         username = request.form['username']
         password = request.form['password']
 
         hashed_password = generate_password_hash(password, method='sha256')
 
-        new_user = User(username=username, password=hashed_password)
+        new_user = User(username=username, password=hashed_password, first_name=first_name, last_name=last_name)
 
         db.session.add(new_user)
         db.session.commit()
+
+        user = User.query.filter_by(username=username).first()
+
+        session['user_id'] = user.id
+        session['username'] = user.username
+        session['first_name'] = user.first_name
+        session['last_name'] = user.last_name
 
         return redirect('/')
 
@@ -77,11 +88,21 @@ def register():
 
 @app.route("/")
 def home():
+
     if 'user_id' in session:
 
         movies = Movie.query.limit(30).all()
 
-        return render_template('home.html', movies=movies)
+        genres = ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy', 'Romance', 'Drama', 'Action', 'Crime',
+                  'Thriller', 'Horror', 'Mystery', 'Sci-Fi', 'War', 'Musical', 'Documentary', 'IMAX', 'Western',
+                  'Film-Noir', '(no genres listed)']
+
+        movies_by_genre = {}
+
+        for genre in genres:
+            movies_by_genre[genre] = Movie.query.filter(Movie.genres.any(MovieGenre.genre == genre)).limit(10).all()
+
+        return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre, firstName=session['first_name'], lastName=session['last_name'])
     else:
         return redirect('/login')
 

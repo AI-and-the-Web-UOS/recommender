@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind</title>
+    <title>Movie Minds</title>
     <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 </head>
-<body style="font-family: 'Poppins', sans-serif">
-    <nav class="py-5  border-b border-solid border-black">
+<body style="font-family: 'Poppins', sans-serif; background-color: #010206">
+    <nav class="py-5 shadow-md mb-10">
         <div class="container flex items-center justify-start mx-auto">
             <div class="text-blue-700 font-bold text-2xl mr-20"> MovieMinds </div>
             <ul class="flex space-x-10 mr-auto">
@@ -24,23 +24,22 @@
             </div>
         </div>
     </nav>
-    <div class="flex flex-col whitespace-nowrap p-4 bg-gray-800">
-        <h2>Recommended for you</h2>
-        <div class="z-50 flex flex-row overflow-auto">
+    <div class="flex flex-col" style="margin-left: auto; margin-right: 0">
+        <div class="overflow-auto flex flex-row p-2" style="background-color: antiquewhite; overflow-x: auto;">
             {% for movie in movies %}
-                <div>
+                <div class="bg-blue-500 ml-20 h-24" style="min-width: 400px; height: 96px">
                     <p>{{ movie.title }}</p>
                 </div>
             {% endfor %}
         </div>
-        <div class="z-50">
-            <h2>Recommended for you</h2>
+        <div class="overflow-auto flex flex-row p-2 border-0 border-r-2" style="max-width: 100%; background-color: antiquewhite; overflow-x: auto;">
             {% for movie in movies %}
-                <div>
+                <div class="bg-blue-500 ml-20 h-24" style="min-width: 400px; height: 96px">
                     <p>{{ movie.title }}</p>
                 </div>
             {% endfor %}
         </div>
     </div>
+
 </body>
 </html>

@@ -6,16 +6,26 @@
     <title>Movie Minds</title>
     <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <style>
+        /* Versteckt die Scrollbar für alle Elemente */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Versteckt die Scrollbar für Firefox */
+        html {
+            scrollbar-width: none;
+    }
+</style>
 </head>
-<body style="font-family: 'Poppins', sans-serif; background-color: #010206">
+<body style="background-color: #252837">
     <nav class="py-5 shadow-md mb-10">
         <div class="container flex items-center justify-start mx-auto">
-            <div class="text-blue-700 font-bold text-2xl mr-20"> MovieMinds </div>
+            <div class="text-white font-bold text-2xl mr-20"> MovieMinds </div>
             <ul class="flex space-x-10 mr-auto">
-                <li class="hover:text-blue-700"><a href="#"> Home </a></li>
-                <li class="hover:text-blue-700"><a href="#"> About </a></li>
-                <li class="hover:text-blue-700"><a href="#"> Service </a></li>
-                <li class="hover:text-blue-700"><a href="#"> Contact </a></li>
+                <li class="text-white hover:text-blue-700"><a href="#"> Home </a></li>
+                <li class="text-white hover:text-blue-700"><a href="#"> Movies </a></li>
+                <li class="text-white hover:text-blue-700"><a href="#"> Settings </a></li>
             </ul>
             <div>
                 <a href="/login">
@@ -24,18 +34,24 @@
             </div>
         </div>
     </nav>
-    <div class="flex flex-col" style="margin-left: auto; margin-right: 0">
-        <div class="overflow-auto flex flex-row p-2" style="background-color: antiquewhite; overflow-x: auto;">
+    <div class="flex flex-col" style="margin-left: auto; margin-right: 0; overflow-y: auto">
+        <div class="container mx-auto mb-3">
+            <p class="text-start text-white font-semibold text-xl">Recommended for you</p>
+        </div>
+        <div class="flex flex-row p-2" style="overflow-x: auto; padding-left: 10px; padding-bottom: 50px">
             {% for movie in movies %}
-                <div class="bg-blue-500 ml-20 h-24" style="min-width: 400px; height: 96px">
-                    <p>{{ movie.title }}</p>
+                <div style="width: 250px; min-width: 250px; height: 120px; min-height: 120px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 20px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
+                    <p class="text-white">{{ movie.title }}</p>
                 </div>
             {% endfor %}
         </div>
-        <div class="overflow-auto flex flex-row p-2 border-0 border-r-2" style="max-width: 100%; background-color: antiquewhite; overflow-x: auto;">
+        <div class="container mx-auto mb-3">
+            <p class="text-start text-white font-semibold text-xl">Action</p>
+        </div>
+        <div class="flex flex-row p-2" style="overflow-x: auto; padding-left: 10px; padding-bottom: 50px">
             {% for movie in movies %}
-                <div class="bg-blue-500 ml-20 h-24" style="min-width: 400px; height: 96px">
-                    <p>{{ movie.title }}</p>
+                <div style="width: 250px; min-width: 250px; height: 120px; min-height: 120px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 20px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); ">
+                    <p class="text-white">{{ movie.title }}</p>
                 </div>
             {% endfor %}
         </div>

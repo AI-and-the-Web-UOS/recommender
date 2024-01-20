@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta
+import secrets
+
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_session import Session
 from models import db, User, Movie, MovieGenre
 from read_data import check_and_read_data
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_mail import Mail, Message
 
 
 # Class-based application configuration
@@ -24,6 +28,15 @@ app.app_context().push()  # create an app context before initializing db
 db.init_app(app)  # initialize database
 db.create_all()  # create database if necessary
 
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME='',
+    MAIL_PASSWORD=''
+)
+
+mail = Mail(app)
 sess = Session()  # initialize Flask-Session
 
 
@@ -33,6 +46,18 @@ def initdb_command():
     """Creates the database tables."""
     check_and_read_data(db)
     print('Initialized the database.')
+
+
+def send_mail(email, reset_link):
+    try:
+        msg = Message("Reset password for MovieMinds",
+                      sender='jonah.schlie@gmail.com',
+                      recipients=[email])
+        msg.body = f"Click this link to reset you password: {reset_link}"
+        mail.send(msg)
+        return 'Mail sent!'
+    except Exception as e:
+        return str(e)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -86,9 +111,55 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        username = request.form['username']
+
+        user = User.query.filter_by(username=username).first()
+
+        if user:
+
+            token = secrets.token_urlsafe(32)
+            user.reset_token = token
+            user.reset_token_expiration = datetime.utcnow() + timedelta(hours=2)
+            db.session.commit()
+
+            reset_link = url_for('reset_password', token=token, _external=True)
+
+            print(send_mail(username, reset_link))
+
+            flash('Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.', 'info')
+            return redirect('/login')
+    return render_template('forgot_password.html')
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user = User.query.filter_by(reset_token=token).first()
+
+    if user:
+        if request.method == 'POST':
+            password1 = request.form['password1']
+            password2 = request.form['password2']
+
+            if password1 == password2:
+                hashed_password = generate_password_hash(password1, method='sha256')
+
+                user.password = hashed_password
+                user.reset_token = None
+                user.reset_token_expiration = None
+                db.session.commit()
+
+                flash('Ihr Passwort wurde erfolgreich zurückgesetzt.', 'success')
+                return redirect('/login')
+
+        return render_template('reset_password.html', token=token)
+    else:
+        flash('Der Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.', 'danger')
+        return redirect('/login')
 @app.route("/")
 def home():
-
     if 'user_id' in session:
 
         movies = Movie.query.limit(30).all()
@@ -102,7 +173,8 @@ def home():
         for genre in genres:
             movies_by_genre[genre] = Movie.query.filter(Movie.genres.any(MovieGenre.genre == genre)).limit(10).all()
 
-        return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre, firstName=session['first_name'], lastName=session['last_name'])
+        return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre,
+                               firstName=session['first_name'], lastName=session['last_name'])
     else:
         return redirect('/login')
 

@@ -19,6 +19,10 @@ class User(db.Model):
     # User information
     first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
     last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
+    # Password reset information
+    reset_token = db.Column(db.String(100), nullable=True, unique=True)
+    reset_token_expiration = db.Column(db.DateTime(), nullable=True)
+
 
 
 class Movie(db.Model):

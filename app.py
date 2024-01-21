@@ -39,6 +39,8 @@ app.config.update(
 mail = Mail(app)
 sess = Session()  # initialize Flask-Session
 
+check_and_read_data(db)
+
 
 @app.cli.command('initdb')
 def initdb_command():
@@ -173,10 +175,28 @@ def home():
         for genre in genres:
             movies_by_genre[genre] = Movie.query.filter(Movie.genres.any(MovieGenre.genre == genre)).limit(10).all()
 
+        for movie in movies:
+            print(f"Movie: {movie.title}")
+            for tag in movie.tags:
+                print(f"Tag: {tag.tag}")
+
         return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre,
                                firstName=session['first_name'], lastName=session['last_name'])
     else:
         return redirect('/login')
+
+
+@app.route("/movie/<int:movie_id>/rate", methods=['GET', 'POST'])
+def rate_movie(movie_id):
+
+    movie = Movie.query.get(movie_id)
+
+    movie_links = movie.links
+
+    if not movie:
+        return render_template('home.html', error_message='Movie not found')
+
+    return render_template('rate_movie.html', movie=movie, links=movie_links[0])
 
 
 # Start development web server

@@ -24,12 +24,13 @@ class User(db.Model):
     reset_token_expiration = db.Column(db.DateTime(), nullable=True)
 
 
-
 class Movie(db.Model):
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100, collation='NOCASE'), nullable=False, unique=True)
     genres = db.relationship('MovieGenre', backref='movie', lazy=True)
+    tags = db.relationship('Tags', backref='movie', lazy=True)
+    links = db.relationship('Links', backref='movie', lazy=True)
 
 
 class MovieGenre(db.Model):
@@ -38,3 +39,20 @@ class MovieGenre(db.Model):
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
     genre = db.Column(db.String(255), nullable=False, server_default='')
 
+
+
+class Tags(db.Model):
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(255), nullable=False, server_default='')
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    timestamp = db.Column(db.DateTime(), nullable=False)
+
+
+class Links(db.Model):
+    __tablename__ = 'links'
+    id = db.Column(db.Integer, primary_key=True)
+    imdb_id = db.Column(db.String(255), nullable=False, server_default='')
+    tmdb_id = db.Column(db.String(255), nullable=False, server_default='')
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)

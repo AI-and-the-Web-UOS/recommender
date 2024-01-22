@@ -1,6 +1,6 @@
 import csv
 from sqlalchemy.exc import IntegrityError
-from models import Movie, MovieGenre, Tags, Links
+from models import Movie, MovieGenre, Tags, Links, Ratings
 from datetime import datetime
 
 def check_and_read_data(db):
@@ -76,3 +76,25 @@ def check_and_read_data(db):
                 if count % 100 == 0:
                     print(count, " links read")
 
+    if Ratings.query.count() == 0:
+        # read ratings from csv
+        with open('data/ratings_small.csv', newline='', encoding='utf8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            count = 0
+            for row in reader:
+                if count > 0:
+                    try:
+                        user_id = row[0]
+                        movie_id = row[1]
+                        rating = row[2]
+                        timestamp = datetime.utcfromtimestamp(float(row[3]))
+                        rating = Ratings(user_id=user_id, movie_id=movie_id, rating=rating, timestamp=timestamp)
+                        db.session.add(rating)
+                        db.session.commit()  # save data to database
+                    except IntegrityError:
+                        print("Ignoring duplicate rating: " + rating)
+                        db.session.rollback()
+                        pass
+                count += 1
+                if count % 100 == 0:
+                    print(count, " ratings read")

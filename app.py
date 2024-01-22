@@ -3,10 +3,11 @@ import secrets
 
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_session import Session
-from models import db, User, Movie, MovieGenre
+from models import db, User, Movie, MovieGenre, Ratings
 from read_data import check_and_read_data
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
+from sqlalchemy.orm import aliased
 
 
 # Class-based application configuration
@@ -121,7 +122,6 @@ def forgot_password():
         user = User.query.filter_by(username=username).first()
 
         if user:
-
             token = secrets.token_urlsafe(32)
             user.reset_token = token
             user.reset_token_expiration = datetime.utcnow() + timedelta(hours=2)
@@ -160,6 +160,8 @@ def reset_password(token):
     else:
         flash('Der Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.', 'danger')
         return redirect('/login')
+
+
 @app.route("/")
 def home():
     if 'user_id' in session:
@@ -188,7 +190,6 @@ def home():
 
 @app.route("/movie/<int:movie_id>/rate", methods=['GET', 'POST'])
 def rate_movie(movie_id):
-
     movie = Movie.query.get(movie_id)
 
     movie_links = movie.links
@@ -197,6 +198,39 @@ def rate_movie(movie_id):
         return render_template('home.html', error_message='Movie not found')
 
     return render_template('rate_movie.html', movie=movie, links=movie_links[0])
+
+
+@app.route("/movies", methods=['GET', 'POST'])
+def movies():
+    if 'user_id' in session:
+
+        if request.method == 'POST':
+            movie_id = request.form['movie_id']
+            rating = request.form['rating']
+
+            user_id = session['user_id']
+
+            new_rating = Ratings(movie_id=movie_id, user_id=user_id, rating=rating, timestamp=datetime.utcnow())
+
+            db.session.add(new_rating)
+            db.session.commit()
+
+        user_id = session['user_id']
+
+        movie_ratings = aliased(Ratings)
+        movies = aliased(Movie)
+
+        rated_movies = (
+            db.session.query(movies, movie_ratings.rating)
+            .join(movie_ratings, movies.id == movie_ratings.movie_id)
+            .filter(movie_ratings.user_id == user_id)
+            .all()
+        )
+
+        return render_template('movies.html', movies=rated_movies, firstName=session['first_name'],
+                               lastName=session['last_name'])
+    else:
+        return redirect('/login')
 
 
 # Start development web server

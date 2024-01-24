@@ -44,6 +44,13 @@ def check_and_read_data(db):
                         tag = row[2]
                         timestamp = datetime.utcfromtimestamp(float(row[3]))
                         tag = Tags(user_id=user_id, movie_id=movie_id, tag=tag, timestamp=timestamp)
+                        
+                        # check if user_id exists in db, if not create user
+                        if User.query.filter_by(id=user_id).count() == 0:
+                            print(f"User does not exist, adding user with id {user_id}")
+                            user = User(id=user_id, username=user_id, )
+                            db.session.add(user)
+                        
                         db.session.add(tag)
                         db.session.commit()  # save data to database
                     except IntegrityError:
@@ -78,7 +85,7 @@ def check_and_read_data(db):
 
     if Ratings.query.count() == 0:
         # read ratings from csv
-        with open('data/ratings_small.csv', newline='', encoding='utf8') as csvfile:
+        with open('data/ratings_full.csv', newline='', encoding='utf8') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             count = 0
             for row in reader:

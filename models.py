@@ -20,9 +20,14 @@ class User(db.Model):
     # User information
     first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
     last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
+    
+    # relationship to ratings table
+    ratings = db.relationship('Ratings', backref='user', lazy=True)
+
     # Password reset information
     reset_token = db.Column(db.String(100), nullable=True, unique=True)
     reset_token_expiration = db.Column(db.DateTime(), nullable=True)
+
 
 
 class Movie(db.Model):
@@ -40,7 +45,6 @@ class MovieGenre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
     genre = db.Column(db.String(255), nullable=False, server_default='')
-
 
 
 class Tags(db.Model):
@@ -62,8 +66,7 @@ class Links(db.Model):
 class Ratings(db.Model):
     __tablename__ = 'ratings'
     id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Float, nullable=False, server_default='')
+    rating = db.Column(db.Float, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     timestamp = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
-

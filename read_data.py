@@ -1,6 +1,6 @@
 import csv
 from sqlalchemy.exc import IntegrityError
-from models import Movie, MovieGenre, Tags, Links, Ratings
+from models import Movie, MovieGenre, Tags, Links, Ratings, User
 from datetime import datetime
 
 def check_and_read_data(db):
@@ -88,6 +88,12 @@ def check_and_read_data(db):
                         movie_id = row[1]
                         rating = row[2]
                         timestamp = datetime.utcfromtimestamp(float(row[3]))
+                        # check if user_id exists in db, if not create user
+                        if User.query.filter_by(id=user_id).count() == 0:
+                            print(f"User does not exist, adding user with id {user_id}")
+                            user = User(id=user_id, username=user_id, )
+                            db.session.add(user)
+
                         rating = Ratings(user_id=user_id, movie_id=movie_id, rating=rating, timestamp=timestamp)
                         db.session.add(rating)
                         db.session.commit()  # save data to database

@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserMixin
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -64,5 +65,5 @@ class Ratings(db.Model):
     rating = db.Column(db.Float, nullable=False, server_default='')
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    timestamp = db.Column(db.DateTime(), nullable=False)
+    timestamp = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
 

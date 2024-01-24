@@ -177,11 +177,6 @@ def home():
         for genre in genres:
             movies_by_genre[genre] = Movie.query.filter(Movie.genres.any(MovieGenre.genre == genre)).limit(10).all()
 
-        for movie in movies:
-            print(f"Movie: {movie.title}")
-            for tag in movie.tags:
-                print(f"Tag: {tag.tag}")
-
         return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre,
                                firstName=session['first_name'], lastName=session['last_name'])
     else:
@@ -192,12 +187,25 @@ def home():
 def rate_movie(movie_id):
     movie = Movie.query.get(movie_id)
 
+    if request.method == 'POST':
+        selected_rating = request.form.get('selected_rating')
+        user_id = session['user_id']
+
+        new_rating = Ratings(movie_id=movie_id, user_id=user_id, rating=float(selected_rating))
+        print(new_rating.rating, new_rating.user_id, new_rating.movie_id)
+        db.session.add(new_rating)
+
     movie_links = movie.links
+
+    user_rating = Ratings.query.filter_by(movie_id=movie_id, user_id=session["user_id"]).first()
 
     if not movie:
         return render_template('home.html', error_message='Movie not found')
 
-    return render_template('rate_movie.html', movie=movie, links=movie_links[0])
+    if user_rating:
+        return render_template('rate_movie.html', movie=movie, links=movie_links[0], rating=user_rating.rating)
+    else:
+        return render_template('rate_movie.html', movie=movie, links=movie_links[0])
 
 
 @app.route("/movies", methods=['GET', 'POST'])

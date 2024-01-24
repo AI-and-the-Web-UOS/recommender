@@ -192,7 +192,6 @@ def rate_movie(movie_id):
         user_id = session['user_id']
 
         new_rating = Ratings(movie_id=movie_id, user_id=user_id, rating=float(selected_rating))
-        print(new_rating.rating, new_rating.user_id, new_rating.movie_id)
         db.session.add(new_rating)
 
     movie_links = movie.links

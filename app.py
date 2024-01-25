@@ -3,7 +3,7 @@ import secrets
 
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_session import Session
-from models import db, User, Movie, MovieGenre, Ratings
+from models import db, User, Movie, MovieGenre, Ratings, Tags
 from read_data import check_and_read_data
 from database import get_user_movie_rating
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -170,11 +170,37 @@ def reset_password(token):
 def home():
     if 'user_id' in session:
 
+        db_session = db.session
+
         movie_ids, movie_list = find_similar_movies(session['user_id'])
         if len(movie_ids) > 0:
-            movies = Movie.query.filter(Movie.id.in_(movie_ids)).all()
+            movies = db_session.query(
+                Movie.title,
+                func.count(Ratings.id).label('rating_count'),
+                Movie.id,
+                func.round(func.avg(Ratings.rating), 1).label('rating_average')
+            ).filter(
+                Movie.id.in_(movie_ids)
+            ).join(
+                Ratings, Movie.id == Ratings.movie_id
+            ).group_by(
+                Movie.title
+            ).order_by(
+                func.count(Ratings.id).desc()
+            ).all()
         else:
-            movies = Movie.query.limit(30).all()
+            movies = db_session.query(
+                Movie.title,
+                func.count(Ratings.id).label('rating_count'),
+                Movie.id,
+                func.round(func.avg(Ratings.rating), 1).label('rating_average')
+            ).join(
+                Ratings, Movie.id == Ratings.movie_id
+            ).group_by(
+                Movie.title
+            ).order_by(
+                func.count(Ratings.id).desc()
+            ).limit(30).all()
 
         genres = ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy', 'Romance', 'Drama', 'Action', 'Crime',
                   'Thriller', 'Horror', 'Mystery', 'Sci-Fi', 'War', 'Musical', 'Documentary', 'IMAX', 'Western',
@@ -182,12 +208,12 @@ def home():
 
         movies_by_genre = {}
 
-        db_session = db.session
         for genre in genres:
             movies_by_genre[genre] = db_session.query(
                 Movie.title,
                 func.count(Ratings.id).label('rating_count'),
-                Movie.id
+                Movie.id,
+                func.round(func.avg(Ratings.rating), 1).label('rating_average')
             ).join(
                 MovieGenre, Movie.id == MovieGenre.movie_id
             ).join(

@@ -5,9 +5,11 @@ from flask import Flask, render_template, request, redirect, flash, session, url
 from flask_session import Session
 from models import db, User, Movie, MovieGenre, Ratings
 from read_data import check_and_read_data
+from database import get_user_movie_rating
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from sqlalchemy.orm import aliased
+
 
 
 # Class-based application configuration
@@ -54,7 +56,7 @@ def initdb_command():
 def send_mail(email, reset_link):
     try:
         msg = Message("Reset password for MovieMinds",
-                      sender='jonah.schlie@gmail.com',
+                      sender='ai.and.the.web@gmail.com',
                       recipients=[email])
         msg.body = f"Click this link to reset you password: {reset_link}"
         mail.send(msg)
@@ -193,10 +195,11 @@ def rate_movie(movie_id):
 
         new_rating = Ratings(movie_id=movie_id, user_id=user_id, rating=float(selected_rating))
         db.session.add(new_rating)
+        db.session.commit()
 
     movie_links = movie.links
 
-    user_rating = Ratings.query.filter_by(movie_id=movie_id, user_id=session["user_id"]).first()
+    user_rating = get_user_movie_rating(user_id=session["user_id"], movie_id=movie_id)
 
     if not movie:
         return render_template('home.html', error_message='Movie not found')

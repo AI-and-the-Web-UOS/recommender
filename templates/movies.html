@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Minds</title>
+    <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <style>
+        /* Versteckt die Scrollbar für alle Elemente */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Versteckt die Scrollbar für Firefox */
+        html {
+            scrollbar-width: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var movieDivs = document.querySelectorAll('.movie-div');
+
+            movieDivs.forEach(function (movieDiv) {
+                movieDiv.addEventListener('click', function () {
+
+                    var movieId = movieDiv.getAttribute('data-movie-id');
+
+                    window.location.href = '/movie/' + movieId + '/rate';
+                });
+            });
+        });
+    </script>
+</head>
+<body style="background-color: #252837">
+    <nav class="py-5 shadow-md mb-10">
+        <div class="container flex items-center justify-start mx-auto">
+            <div class="text-white font-bold text-2xl mr-20"> MovieMinds </div>
+            <ul class="flex space-x-10 mr-auto">
+                <li class="text-white hover:text-blue-700"><a href="/"> Home </a></li>
+                <li class="text-white hover:text-blue-700"><a href="#"> Movies </a></li>
+            </ul>
+            <div>
+                <a href="/login">
+                    <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" class="w-5 h-5">
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div style="display: flex; flex-wrap: wrap; margin-left: 20px">
+        {% for movie, rating in movies %}
+            <div class="movie-div" data-movie-id="{{ movie.id }}" style="cursor: pointer; width: 250px; min-width: 250px; height: 150px; min-height: 150px; background-color: #2F313D; margin-right: 30px; border-radius: 10px; padding: 15px 20px 15px 10px; box-shadow: 0px 20px 10px 2px rgba(0,0,0,0.4); margin-bottom: 30px; display: flex; flex-direction: column; justify-content: space-between">
+                <p class="text-white text-bold" style="margin-bottom: 10px; font-size: 18px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ movie.title }}</p>
+                <div class="flex flex-row items-center">
+                    <img src="{{ url_for('static', filename='images/star.png') }}" alt="Links" class="w-4 h-4" style="margin-right: 10px">
+                    <p style="color: #FFC105">{{ rating }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+flask~=2.2.5
+flask-sqlalchemy
+werkzeug~=2.2.3
+sqlalchemy~=2.0.24

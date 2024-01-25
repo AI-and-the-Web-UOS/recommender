@@ -10,7 +10,9 @@ def get_user_ratings(user_id):
         movie = rating.movie
         if movie:
             movie_title = movie.title
-            user_ratings.append({'title': movie_title, 'user_rating': rating.rating, 'movie_id': movie.id})
+            movie_id = movie.id
+            timestamp = rating.timestamp
+            user_ratings.append({'title': movie_title, 'user_rating': rating.rating, 'movie_id': movie_id, 'timestamp': timestamp.timestamp()})
         else:
             return jsonify({'error': 'Movie not found'}), 404
 

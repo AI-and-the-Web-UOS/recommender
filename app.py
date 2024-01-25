@@ -83,7 +83,7 @@ def login():
             session['last_name'] = user.last_name
 
             flash('Login successful', 'success')
-            return redirect('/')
+            return redirect(url_for('home'))
         else:
             flash('Login failed. Check your username and password.', 'danger')
 
@@ -113,7 +113,7 @@ def register():
         session['first_name'] = user.first_name
         session['last_name'] = user.last_name
 
-        return redirect('/')
+        return redirect(url_for('home'))
 
     return render_template('register.html')
 
@@ -136,7 +136,7 @@ def forgot_password():
             print(send_mail(username, reset_link))
 
             flash('Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.', 'info')
-            return redirect('/login')
+            return redirect(url_for('login'))
     return render_template('forgot_password.html')
 
 
@@ -158,12 +158,12 @@ def reset_password(token):
                 db.session.commit()
 
                 flash('Ihr Passwort wurde erfolgreich zurückgesetzt.', 'success')
-                return redirect('/login')
+                return redirect(url_for('login'))
 
         return render_template('reset_password.html', token=token)
     else:
         flash('Der Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.', 'danger')
-        return redirect('/login')
+        return redirect(url_for('login'))
 
 
 @app.route("/")
@@ -231,7 +231,7 @@ def home():
         return render_template('home.html', movies=movies, moviesByGenre=movies_by_genre,
                                firstName=session['first_name'], lastName=session['last_name'])
     else:
-        return redirect('/login')
+        return redirect(url_for('login'))
 
 
 @app.route("/movie/<int:movie_id>/rate", methods=['GET', 'POST'])
@@ -289,7 +289,7 @@ def movies():
         return render_template('movies.html', movies=rated_movies, firstName=session['first_name'],
                                lastName=session['last_name'])
     else:
-        return redirect('/login')
+        return redirect(url_for('login'))
 
 
 # Start development web server

@@ -1,5 +1,7 @@
 # Movie recommender
-This tool was developed as part of the AI and the Web course at Osnabrück University.
+<p>
+<img align='right' src="graphics/logo.png" width="200">
+<p>This tool was developed as part of the seminar "AI and the Web" at Osnabrück University. We used a simple rule based recommendation algorithm that is based on other users likes who have similar viewing preferences as the current user. We utilize a SQLite based database, which has been filled with data provided by IMDB.</p>
 
 ## Front-End Design Using Tailwind CSS and Flask
 
